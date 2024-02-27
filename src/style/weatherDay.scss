@@ -1,0 +1,18 @@
+.day {
+    max-width: 50px;
+    margin: 20px 10px;
+    font-size: 10px;
+    text-align: center;
+
+    .day-title {
+        text-align: center;
+        color: #999999;
+    }
+
+    img {
+        display: block;
+        margin: 15px auto 10px;
+        max-width: 50px;
+        aspect-ratio: 1/1;
+    }
+}
