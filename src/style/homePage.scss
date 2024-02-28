@@ -56,7 +56,7 @@ main {
 
     .items-container {
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         flex-wrap: wrap;
     }
 
@@ -197,4 +197,8 @@ main {
             }
         }
     }
+}
+
+hr {
+    border-color: #cecece4b;
 }
