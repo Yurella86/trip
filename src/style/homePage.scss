@@ -78,7 +78,11 @@ main {
         cursor: pointer;
 
         &:hover {
-            background-color: #dadada;
+            background-color: #ffffff;
+        }
+
+        &:visited {
+            background-color: #db0000;
         }
 
         span {

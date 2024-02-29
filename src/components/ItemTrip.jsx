@@ -2,14 +2,16 @@ import React from "react";
 import tripImage from "../image/trip.png";
 import "../style/itemTrip.scss";
 
-const ItemTrip = () => {
+const ItemTrip = ({image, city, startDateTrip, endDateTrip}) => {
     return (
         <div className="item">
-            <img src={tripImage} alt="trip-image" />
+            <img src={image} alt="trip-image" />
             <div className="description">
-                <div className="city">Berlin</div>
+                <div className="city">{city}</div>
                 <div className="date">
-                    <span>14.07.2023 - 21.07.2023</span>
+                    <span>
+                        {startDateTrip} - {endDateTrip}
+                    </span>
                 </div>
             </div>
         </div>
