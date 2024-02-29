@@ -1,36 +1,92 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "../style/modal.scss";
+import {fetchCity} from "../utils/Api";
+import {validateStartDate, validateEndDate} from "../utils/validationDate";
 
 const ModalComponent = ({newTrip, statusModal}) => {
-    const cityData = ["LV", "LV", "BC"];
-    const [city, setCity] = useState(0);
+    const [cityData, setCityData] = useState();
+
+    const [cityName, setCityName] = useState(0);
     const [startDateTrip, setStartDateTrip] = useState("");
     const [endDateTrip, setEndDateTrip] = useState("");
 
-    const closeModal = () => {
-        statusModal(false);
-    };
+    const [cityError, setCityError] = useState(false);
+    const [startDateError, setStartDateError] = useState(false);
+    const [endDateError, setEndDateError] = useState(false);
+
+    const [validationDateStart, setValidationDateStart] = useState("");
+    const [validateDateRange, setValidateDateRange] = useState("");
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
+        const validationStart = validateStartDate(startDateTrip);
+        const validationEnd = validateEndDate(startDateTrip, endDateTrip);
+        setValidationDateStart(validationStart);
+        setValidateDateRange(validationEnd);
+
+        if (validationStart === "-1" || validationStart === "+15") {
+            return;
+        }
+        if (
+            validationEnd === "-1" ||
+            validationEnd === "-2" ||
+            validationEnd === "+15"
+        ) {
+            return;
+        }
+        if (!cityName || !startDateTrip || !endDateTrip) {
+            setCityError(!cityName);
+            setStartDateError(!startDateTrip);
+            setEndDateError(!endDateTrip);
+            return;
+        }
+
+        const getCity = cityData.find((city) => city.name === cityName);
         const newTripData = {
-            city,
+            image: getCity.image,
+            city: getCity.name,
             startDateTrip,
             endDateTrip,
         };
 
         newTrip(newTripData);
+        clearFormData();
         statusModal(false);
     };
 
     const hendleClearForm = (e) => {
         e.preventDefault();
+        clearFormData();
+    };
 
-        setCity(0);
+    const closeModal = () => {
+        clearFormData();
+        statusModal(false);
+    };
+
+    const clearFormData = () => {
+        setCityName(0);
         setStartDateTrip("");
         setEndDateTrip("");
+
+        setCityError(false);
+        setStartDateError(false);
+        setEndDateError(false);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await fetchCity();
+                data.sort((a, b) => (a.name > b.name ? 1 : -1));
+                setCityData(data);
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <div className="modal">
@@ -44,28 +100,55 @@ const ModalComponent = ({newTrip, statusModal}) => {
                         <hr />
                     </div>
                     <div className="modal-content">
-                        <div className="field">
+                        <div className="field-city">
                             <label>
                                 <span className="star">*</span>
                                 City
+                                {cityError && (
+                                    <span className="require">
+                                        Field is required
+                                    </span>
+                                )}
                             </label>
                             <select
                                 name="city"
-                                value={city}
-                                onChange={(e) => setCity(e.target.value)}
+                                value={cityName}
+                                onChange={(e) => setCityName(e.target.value)}
                             >
                                 <option value={0} disabled>
                                     Please select a city
                                 </option>
-                                {cityData.map((city) => (
-                                    <option value={city}>{city}</option>
-                                ))}
+                                {cityData
+                                    ? cityData.map((city) => (
+                                          <option
+                                              key={city.id}
+                                              value={city.name}
+                                          >
+                                              {city.name}
+                                          </option>
+                                      ))
+                                    : undefined}
                             </select>
                         </div>
-                        <div className="field">
+                        <div className="field-start">
                             <label>
                                 <span className="star">*</span>
                                 Start date
+                                {startDateError && (
+                                    <span className="require">
+                                        Field is required
+                                    </span>
+                                )}
+                                {validationDateStart === "-1" && (
+                                    <span className="require">
+                                        The date must be a future
+                                    </span>
+                                )}
+                                {validationDateStart === "+15" && (
+                                    <span className="require">
+                                        The date should not be more than 15 days
+                                    </span>
+                                )}
                             </label>
                             <input
                                 type="date"
@@ -78,10 +161,31 @@ const ModalComponent = ({newTrip, statusModal}) => {
                                 }
                             />
                         </div>
-                        <div className="field">
+                        <div className="field-end">
                             <label>
                                 <span className="star">*</span>
                                 End date
+                                {endDateError && (
+                                    <span className="require">
+                                        Field is required
+                                    </span>
+                                )}
+                                {validateDateRange === "-1" && (
+                                    <span className="require">
+                                        The date must be a future
+                                    </span>
+                                )}
+                                {validateDateRange === "-2" && (
+                                    <span className="require">
+                                        The date should not be earlier than the
+                                        initial date
+                                    </span>
+                                )}
+                                {validateDateRange === "+15" && (
+                                    <span className="require">
+                                        The date should not be more than 15 days
+                                    </span>
+                                )}
                             </label>
                             <input
                                 type="date"

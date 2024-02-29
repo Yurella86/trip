@@ -10,10 +10,17 @@ import ModalComponent from "./ModalComponent";
 const HomePage = () => {
     const [weatherData, setWeatherData] = useState(null);
     const [isModal, setIsModal] = useState();
-    const [tripData, setTripData] = useState();
+    const [tripData, setTripData] = useState([]);
 
-    const trip = [1, 1, 2];
     const day = [1, 1, 2, 32, 3, 3];
+
+    useEffect(() => {
+        console.log(tripData);
+    }, [tripData]);
+
+    const openModal = () => {
+        setIsModal(true);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,14 +34,6 @@ const HomePage = () => {
         };
         fetchData();
     }, []);
-
-    useEffect(() => {
-        console.log(tripData);
-    }, [tripData]);
-
-    const openModal = () => {
-        setIsModal(true);
-    };
 
     return (
         <Fragment>
@@ -58,9 +57,21 @@ const HomePage = () => {
                                 <div className="trip-container">
                                     <div className="flex-container">
                                         <div className="items-container">
-                                            {trip.map((e, index) => (
-                                                <ItemTrip key={index} />
-                                            ))}
+                                            {tripData
+                                                ? tripData.map((trip) => (
+                                                      <ItemTrip
+                                                          key={trip.id}
+                                                          image={trip.image}
+                                                          city={trip.city}
+                                                          startDateTrip={
+                                                              trip.startDateTrip
+                                                          }
+                                                          endDateTrip={
+                                                              trip.endDateTrip
+                                                          }
+                                                      />
+                                                  ))
+                                                : null}
                                         </div>
                                         <div
                                             className="btn-container"
@@ -125,7 +136,7 @@ const HomePage = () => {
 
             {isModal ? (
                 <ModalComponent
-                    newTrip={(trip) => setTripData(trip)}
+                    newTrip={(trip) => setTripData([...tripData, trip])}
                     statusModal={(status) => setIsModal(status)}
                 />
             ) : undefined}

@@ -66,12 +66,19 @@
         padding: 40px 20px;
     }
 
-    .field {
+    .modal-content > div {
         margin-top: 10px;
     }
 
     .star {
         padding: 0 2px;
+        color: red;
+    }
+
+    .require {
+        text-transform: none;
+        padding-left: 20px;
+        font-size: 10px;
         color: red;
     }
 
