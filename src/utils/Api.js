@@ -12,26 +12,20 @@ async function fetchCity() {
         throw new Error("Something wrong with City Api");
     }
     const data = await response.json();
-    data.forEach((element) => {
-        storData.cities.push(element);
-    });
     return data;
 }
 
-// Функція для отримання даних JSON
 async function fetchData(endpoint) {
     const response = await fetch(`${BASE_URL}/${endpoint}`);
     const data = await response.json();
     return data;
 }
 
-// Функція для отримання погоди для міста
 async function fetchCityWeather(city) {
     const endpoint = `weather?city=${city}`;
     return fetchData(endpoint);
 }
 
-// Функція для отримання даних про подорожі
 async function fetchTripData(tripId) {
     const endpoint = `trip?id=${tripId}`;
     return fetchData(endpoint);

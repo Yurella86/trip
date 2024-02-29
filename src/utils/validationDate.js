@@ -9,10 +9,8 @@ export const validateStartDate = (inputDate) => {
     let inputDateObject = new Date(year, month, day);
 
     if (inputDateObject < currentDate) {
-        // setValidateDateFutureError(true);
         return "-1";
     }
-    // setValidateDateFutureError(false);
 
     let differenceInTime = inputDateObject.getTime() - currentDate.getTime();
     let differenceInDays = differenceInTime / (1000 * 3600 * 24);
@@ -20,10 +18,8 @@ export const validateStartDate = (inputDate) => {
     console.log(differenceInDays);
 
     if (differenceInDays > 15) {
-        // setValidateDateRangeError(true);
         return "+15";
     }
-    // setValidateDateRangeError(false);
     return "1";
 };
 
@@ -44,11 +40,11 @@ export const validateEndDate = (startDate, endDate) => {
     let endDateObject = new Date(endYear, endMonth, endDay);
 
     if (endDateObject < currentDate) {
-        return "-1"; // Ви можете змінити повернене значення на те, що підходить до вашого використання
+        return "-1";
     }
 
     if (endDateObject < startDateObject) {
-        return "-2"; // Якщо endDate раніше startDate
+        return "-2";
     }
 
     let differenceInTime = endDateObject.getTime() - currentDate.getTime();
@@ -57,8 +53,8 @@ export const validateEndDate = (startDate, endDate) => {
     console.log(differenceInDays);
 
     if (differenceInDays > 15) {
-        return "+15"; // Якщо перевищено обмеження на 15 днів
+        return "+15";
     }
 
-    return "1"; // Якщо все в порядку
+    return "1";
 };
