@@ -1,11 +1,14 @@
 import HomePage from "./components/HomePage";
 import "./style/app.scss";
+import TripProvider from "./store/TripProvider";
 
 function App() {
     return (
-        <div className="app">
-            <HomePage />
-        </div>
+        <TripProvider>
+            <div className="app">
+                <HomePage />
+            </div>
+        </TripProvider>
     );
 }
 

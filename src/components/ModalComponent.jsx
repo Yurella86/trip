@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "../style/modal.scss";
-import {fetchCity} from "../utils/Api";
+import {getCityData} from "../services/Cities_API";
 import {validateStartDate, validateEndDate} from "../utils/validationDate";
+import TripContext from "../store/TripContext";
 
 const ModalComponent = ({newTrip, statusModal}) => {
     const [cityData, setCityData] = useState();
@@ -16,6 +17,8 @@ const ModalComponent = ({newTrip, statusModal}) => {
 
     const [validationDateStart, setValidationDateStart] = useState("");
     const [validateDateRange, setValidateDateRange] = useState("");
+
+    const tripCtx = useContext(TripContext);
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -50,7 +53,14 @@ const ModalComponent = ({newTrip, statusModal}) => {
             endDateTrip,
         };
 
-        newTrip(newTripData);
+        tripCtx.addItem({
+            image: getCity.image,
+            city: getCity.name,
+            startDateTrip,
+            endDateTrip,
+        });
+
+        // newTrip(newTripData);
         clearFormData();
         statusModal(false);
     };
@@ -78,7 +88,7 @@ const ModalComponent = ({newTrip, statusModal}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetchCity();
+                const data = await getCityData();
                 data.sort((a, b) => (a.name > b.name ? 1 : -1));
                 setCityData(data);
             } catch (error) {

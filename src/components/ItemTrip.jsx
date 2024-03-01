@@ -1,16 +1,29 @@
 import React from "react";
-import tripImage from "../image/trip.png";
 import "../style/itemTrip.scss";
 
-const ItemTrip = ({image, city, startDateTrip, endDateTrip}) => {
+const ItemTrip = ({
+    image,
+    city,
+    startDate,
+    endDate,
+    callbackCity,
+    callbackCityStart,
+    callbackCityEnd,
+}) => {
+    const handleTripClick = () => {
+        callbackCity(city);
+        callbackCityStart(startDate);
+        callbackCityEnd(endDate);
+    };
+
     return (
-        <div className="item">
+        <div className="item" onClick={handleTripClick}>
             <img src={image} alt="trip-image" />
             <div className="description">
                 <div className="city">{city}</div>
                 <div className="date">
                     <span>
-                        {startDateTrip} - {endDateTrip}
+                        {startDate} - {endDate}
                     </span>
                 </div>
             </div>
