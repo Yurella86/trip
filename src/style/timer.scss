@@ -1,0 +1,16 @@
+.timer {
+    .flex-container {
+        justify-content: space-between;
+        margin: 0 auto;
+        max-width: 400px;
+    }
+
+    .num {
+        text-transform: uppercase;
+        font-size: 10px;
+        span {
+            font-size: 26px;
+            font-weight: 900;
+        }
+    }
+}

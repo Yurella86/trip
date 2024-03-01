@@ -154,24 +154,26 @@ main {
         position: relative;
         font-size: 20px;
 
-        img {
-            position: absolute;
-            right: 70px;
-            top: 0px;
-            width: 60px;
-        }
-
         .temperature {
-            position: absolute;
+            position: relative;
+            width: max-content;
             font-size: 60px;
             left: 50%;
             top: 50%;
             transform: translate(-50%, 10%);
         }
+
+        img {
+            position: absolute;
+            left: -65px;
+            top: 0px;
+            width: 60px;
+        }
+
         .degree {
             position: absolute;
             font-size: 20px;
-            left: 65px;
+            right: -23px;
             top: 5px;
 
             sub {
@@ -181,25 +183,8 @@ main {
     }
 
     .city-direction {
-        margin-top: 100px;
+        margin-top: 30px;
         font-size: 26px;
-    }
-
-    .timer {
-        .flex-container {
-            justify-content: space-between;
-            margin: 0 auto;
-            max-width: 400px;
-        }
-
-        .num {
-            text-transform: uppercase;
-            font-size: 10px;
-            span {
-                font-size: 26px;
-                font-weight: 900;
-            }
-        }
     }
 }
 
