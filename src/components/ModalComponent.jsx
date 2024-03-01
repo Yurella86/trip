@@ -46,12 +46,6 @@ const ModalComponent = ({newTrip, statusModal}) => {
         }
 
         const getCity = cityData.find((city) => city.name === cityName);
-        const newTripData = {
-            image: getCity.image,
-            city: getCity.name,
-            startDateTrip,
-            endDateTrip,
-        };
 
         tripCtx.addItem({
             image: getCity.image,

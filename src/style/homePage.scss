@@ -49,6 +49,18 @@ main {
             outline-offset: 0;
         }
     }
+    .search-icon {
+        max-width: 15px;
+
+        img {
+            max-width: inherit;
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            height: 15px;
+        }
+    }
 }
 
 .trip-container {

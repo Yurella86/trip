@@ -44,7 +44,7 @@ const Timer = ({timeStart}) => {
     }, [timeStart]);
 
     if (!timeStart) {
-        return <div className="not-time"></div>;
+        return <div className="not-time">loding...</div>;
     }
 
     return (

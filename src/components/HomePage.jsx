@@ -8,6 +8,7 @@ import ModalComponent from "./ModalComponent";
 import TripContext from "../store/TripContext";
 import Timer from "./Timer";
 import {getIcon} from "../utils/getIcon";
+import search from "../icons/search-icon.webp";
 
 const HomePage = () => {
     const [isModal, setIsModal] = useState();
@@ -17,6 +18,7 @@ const HomePage = () => {
     const [tripCityEndDay, setTripCityEndDay] = useState();
     const [weatherDataToday, setWeatherDataToday] = useState(null);
     const [weatherDataRange, setWeatherDataRange] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const nameDays = [
         "Sunday",
@@ -29,11 +31,6 @@ const HomePage = () => {
     ];
 
     const tripCtx = useContext(TripContext);
-
-    // const getIcon = () => {
-    //     const weatherIcon = require(`../icons/${weatherDataToday.days[0].icon}.png`);
-    //     return weatherIcon;
-    // };
 
     const fetchWeatherToday = async (city) => {
         try {
@@ -74,6 +71,14 @@ const HomePage = () => {
         setTripCityEndDay(tripCtx.items[0].endDate);
     }, []);
 
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const filteredTripData = tripData.filter((item) =>
+        item.city.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     if (
         !tripData ||
         !tripCityStartDay ||
@@ -96,46 +101,56 @@ const HomePage = () => {
                             </header>
                             <main>
                                 <div className="search">
-                                    {/* <div className="search-icon">icon</div> */}
+                                    <div className="search-icon">
+                                        <img src={search} alt="search" />
+                                    </div>
                                     <input
                                         type="text"
                                         placeholder="Search your trip"
+                                        value={searchTerm}
+                                        onChange={handleSearchChange}
                                     />
                                 </div>
                                 <div className="trip-container">
                                     <div className="flex-container">
                                         <div className="items-container">
                                             {tripData
-                                                ? tripData.map((trip) => (
-                                                      <ItemTrip
-                                                          key={trip.id}
-                                                          image={trip.image}
-                                                          city={trip.city}
-                                                          startDate={
-                                                              trip.startDate
-                                                          }
-                                                          endDate={trip.endDate}
-                                                          callbackCity={(
-                                                              city
-                                                          ) =>
-                                                              setTripCity(city)
-                                                          }
-                                                          callbackCityStart={(
-                                                              day
-                                                          ) =>
-                                                              setTripCityStartDay(
+                                                ? filteredTripData.map(
+                                                      (trip) => (
+                                                          <ItemTrip
+                                                              key={trip.id}
+                                                              image={trip.image}
+                                                              city={trip.city}
+                                                              startDate={
+                                                                  trip.startDate
+                                                              }
+                                                              endDate={
+                                                                  trip.endDate
+                                                              }
+                                                              callbackCity={(
+                                                                  city
+                                                              ) =>
+                                                                  setTripCity(
+                                                                      city
+                                                                  )
+                                                              }
+                                                              callbackCityStart={(
                                                                   day
-                                                              )
-                                                          }
-                                                          callbackCityEnd={(
-                                                              day
-                                                          ) =>
-                                                              setTripCityEndDay(
+                                                              ) =>
+                                                                  setTripCityStartDay(
+                                                                      day
+                                                                  )
+                                                              }
+                                                              callbackCityEnd={(
                                                                   day
-                                                              )
-                                                          }
-                                                      />
-                                                  ))
+                                                              ) =>
+                                                                  setTripCityEndDay(
+                                                                      day
+                                                                  )
+                                                              }
+                                                          />
+                                                      )
+                                                  )
                                                 : null}
                                         </div>
                                         <div
