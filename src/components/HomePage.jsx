@@ -88,6 +88,37 @@ const HomePage = () => {
         return <div>loading...</div>;
     }
 
+    const tripItems = filteredTripData.map((trip) => (
+        <ItemTrip
+            key={trip.id}
+            image={trip.image}
+            city={trip.city}
+            startDate={trip.startDate}
+            endDate={trip.endDate}
+            callbackCity={(city) => setTripCity(city)}
+            callbackCityStart={(day) => setTripCityStartDay(day)}
+            callbackCityEnd={(day) => setTripCityEndDay(day)}
+        />
+    ));
+
+    const weatherItemsRange = weatherDataRange.map((day, index) => (
+        <WeatherDay
+            key={index}
+            nameDay={nameDays[new Date(day.datetime).getDay()]}
+            icon={day.icon}
+            maxDeg={Math.round(day.tempmax)}
+            minDeg={Math.round(day.tempmin)}
+        />
+    ));
+
+    const dayToday =
+        nameDays[new Date(weatherDataToday.days[0].datetime).getDay()];
+    const weatherDegreeToday = weatherDataToday.days[0].temp;
+    const weatherCityToday = weatherDataToday.address;
+    const weatherIconToday = getIcon(weatherDataToday.days[0].icon);
+
+    console.log(weatherCityToday);
+
     return (
         <Fragment>
             <div className="home-page">
@@ -114,44 +145,7 @@ const HomePage = () => {
                                 <div className="trip-container">
                                     <div className="flex-container">
                                         <div className="items-container">
-                                            {tripData
-                                                ? filteredTripData.map(
-                                                      (trip) => (
-                                                          <ItemTrip
-                                                              key={trip.id}
-                                                              image={trip.image}
-                                                              city={trip.city}
-                                                              startDate={
-                                                                  trip.startDate
-                                                              }
-                                                              endDate={
-                                                                  trip.endDate
-                                                              }
-                                                              callbackCity={(
-                                                                  city
-                                                              ) =>
-                                                                  setTripCity(
-                                                                      city
-                                                                  )
-                                                              }
-                                                              callbackCityStart={(
-                                                                  day
-                                                              ) =>
-                                                                  setTripCityStartDay(
-                                                                      day
-                                                                  )
-                                                              }
-                                                              callbackCityEnd={(
-                                                                  day
-                                                              ) =>
-                                                                  setTripCityEndDay(
-                                                                      day
-                                                                  )
-                                                              }
-                                                          />
-                                                      )
-                                                  )
-                                                : null}
+                                            {tripItems}
                                         </div>
                                         <div
                                             className="btn-container"
@@ -166,29 +160,7 @@ const HomePage = () => {
                                 <div className="weather-container">
                                     <div className="weather-title">Week</div>
                                     <div className="weather-items">
-                                        {weatherDataRange
-                                            ? weatherDataRange.map(
-                                                  (day, index) => (
-                                                      <WeatherDay
-                                                          key={index}
-                                                          nameDay={
-                                                              nameDays[
-                                                                  new Date(
-                                                                      day.datetime
-                                                                  ).getDay()
-                                                              ]
-                                                          }
-                                                          icon={day.icon}
-                                                          maxDeg={Math.round(
-                                                              day.tempmax
-                                                          )}
-                                                          minDeg={Math.round(
-                                                              day.tempmin
-                                                          )}
-                                                      />
-                                                  )
-                                              )
-                                            : undefined}
+                                        {weatherItemsRange}
                                     </div>
                                 </div>
                             </main>
@@ -197,24 +169,12 @@ const HomePage = () => {
                     <div className="right-side">
                         <div className="wrapper">
                             <div className="current-weather">
-                                <div className="current-day">
-                                    {weatherDataToday
-                                        ? nameDays[
-                                              new Date(
-                                                  weatherDataToday.days[0].datetime
-                                              ).getDay()
-                                          ]
-                                        : undefined}
-                                </div>
+                                <div className="current-day">{dayToday}</div>
                                 <div className="current-temperature">
                                     <div className="temperature">
-                                        {weatherDataToday
-                                            ? weatherDataToday.days[0].temp
-                                            : undefined}
+                                        {weatherDegreeToday}
                                         <img
-                                            src={getIcon(
-                                                weatherDataToday.days[0].icon
-                                            )}
+                                            src={weatherIconToday}
                                             alt="weather-icon"
                                         />
                                         <div className="degree">
@@ -223,9 +183,7 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                 <div className="city-direction">
-                                    {weatherDataToday
-                                        ? weatherDataToday.address
-                                        : undefined}
+                                    {weatherCityToday}
                                 </div>
                             </div>
                             <Timer timeStart={tripCityStartDay} />
